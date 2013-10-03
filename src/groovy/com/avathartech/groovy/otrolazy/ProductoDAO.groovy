@@ -17,11 +17,13 @@ class ProductoDAO implements DAO<Productos> {
 
     @Override
     int count(SearchCriteria searchCriteria) {
+
         return Productos.count;
     }
 
     @Override
     List<Productos> find(SearchCriteria searchCriteria, int startIndex, int numberOfId, List<OrderByColumn> orderByColumns) {
+        println("La cantidad Inicio: $startIndex, Cantidad maximo: $numberOfId")
         return Productos.list(max: numberOfId, offset: startIndex);  //To change body of implemented methods use File | Settings | File Templates.
     }
 }

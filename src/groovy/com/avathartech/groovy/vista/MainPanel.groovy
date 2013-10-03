@@ -7,6 +7,7 @@ import com.avathartech.groovy.otrolazy.ProductoDAO
 import com.avathartech.groovy.otrolazy.ProductoSearchCriteria
 import com.jensjansson.pagedtable.ControlsLayout
 import com.jensjansson.pagedtable.PagedTable
+import com.vaadin.data.Property
 import com.vaadin.ui.Panel
 import com.vaadin.ui.TabSheet
 import com.vaadin.ui.Table
@@ -78,11 +79,24 @@ class MainPanel extends Panel {
         tablaConPaginacion.setColumnHeaders(["nombre", "descripcion","referencia", "costo", "cantidad"] as String[])*/
 
         //
-        tablaPaginacion=new PagedTable("Ejemplo de tabla Paginacion");
+        tablaPaginacion=new PagedTable("Ejemplo de tabla de Paginacion");
         ControlsLayout control=tablaPaginacion.createControls();
+        control.itemsPerPageSelect.addValueChangeListener(new Property.ValueChangeListener() {
+            @Override
+            void valueChange(Property.ValueChangeEvent valueChangeEvent) {
+                println("Cambiando la cantidad en el selector....")
+                //println("la cantidad seleccionada: "+control.itemsPerPageSelect.getValue());
+            }
+        })
 
         LazyBeanContainer container=new LazyBeanContainer(Productos.class, new ProductoDAO(), new ProductoSearchCriteria());
         tablaPaginacion.setContainerDataSource(container);
+        tablaPaginacion.setPageLength(10);
+        tablaPaginacion.setImmediate(true);
+        tablaPaginacion.setSelectable(true);
+        tablaPaginacion.setAlwaysRecalculateColumnWidths(true);
+        tablaPaginacion.setVisibleColumns(["nombre", "descripcion", "referencia", "costo", "cantidad"] as Object[])
+
 
         VerticalLayout layoutTabla = new VerticalLayout();
         tablaPaginacion.setWidth("100%")
